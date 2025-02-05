@@ -2,11 +2,15 @@
 
 namespace Database\Seeders;
 
+use App\Models\Appointment;
 use App\Models\Customer;
+use App\Models\CustomerFeedback;
 use App\Models\Department;
 use App\Models\Employee;
 use App\Models\EmployeeSchedule;
+use App\Models\InventoryItem;
 use App\Models\Role;
+use App\Models\Service;
 use App\Models\User;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -23,7 +27,9 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        Customer::factory(100)->has(Vehicle::factory()->count(random_int(1, 3)))->create();
+        Customer::factory(100)->create()->each(function ($customer) {
+            $customer->vehicles()->saveMany(Vehicle::factory(random_int(1, 3))->make());
+        });
 
         DB::statement("INSERT INTO departments(dept_name, dept_type)
 VALUES
@@ -125,6 +131,27 @@ VALUES
                     'service_price' => Factory::create()->randomFloat(2, 20, 999)
                 ]);
         }
+        $services = Service::all();
+        $items = InventoryItem::factory(100)->create();
+        $appointments = Appointment::factory(50)->create();
+
+
+        foreach ($appointments as $appointment) {
+            $counter = random_int(1, 3);
+            for ($i = 0; $i < $counter; $i++) {
+                DB::table('appointment_services')->insert([
+                    'service_id' => $services->random()->service_id,
+                    'appt_id' => $appointment->appt_id
+                ]);
+                DB::table('appointment_items')->insert([
+                    'appt_id' => $appointment->appt_id,
+                    'inv_item_id' => $items->random()->inv_item_id,
+                    'qty_used' => random_int(1, 20)
+                ]);
+            }
+        }
+
+        CustomerFeedback::factory(20)->create();
 
     }
 }
