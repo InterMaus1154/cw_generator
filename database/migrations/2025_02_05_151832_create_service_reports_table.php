@@ -17,7 +17,9 @@ return new class extends Migration
             $table->unsignedInteger('emp_id');
             $table->unsignedInteger('cust_fb_id')->nullable();
             $table->text('service_report_remarks')->nullable();
-            $table->foreign('appt_id')->references('')
+            $table->foreign('appt_id')->references('appt_id')->on('appointments');
+            $table->foreign('emp_id')->references('emp_id')->on('employees');
+            $table->foreign('cust_fb_id')->references('cust_fb_id')->on('customer_feedback');
         });
     }
 

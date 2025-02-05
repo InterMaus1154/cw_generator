@@ -19,7 +19,7 @@ class AppointmentFactory extends Factory
     {
         $appt_remarks = $this->faker->randomElement([0, 1]) === 0 ? $this->faker->realTextBetween(50, 300) : null;
         return [
-            'vehicle_id' => Vehicle::all()->random()->vehicle_id,
+            'vehicle_id' => Vehicle::factory(),
             'appt_date' => $this->faker->dateTimeBetween(startDate: '-3 years'),
             'appt_time' => $this->faker->time,
             'appt_remarks' => $appt_remarks

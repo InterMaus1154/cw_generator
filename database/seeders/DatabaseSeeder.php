@@ -15,6 +15,7 @@ use App\Models\User;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use App\Models\Vehicle;
+use Database\Factories\CustomerFeedbackFactory;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
@@ -27,8 +28,28 @@ class DatabaseSeeder extends Seeder
     public function run(): void
     {
 
-        Customer::factory(100)->create()->each(function ($customer) {
-            $customer->vehicles()->saveMany(Vehicle::factory(random_int(1, 3))->make());
+        $employees = Employee::factory()->has(EmployeeSchedule::factory(5))->count(35)->create();
+
+        Customer::factory(25)->create()->each(function ($customer) use ($employees) {
+            $feedbacks = CustomerFeedback::factory(random_int(1, 5))->create();
+            $customer->customerFeedbacks()->saveMany($feedbacks);
+
+            $customer->vehicles()->saveMany(Vehicle::factory(random_int(1, 3))->create()
+                ->each(function ($vehicle) use ($employees, $feedbacks) {
+                    $vehicle->appointments()->saveMany(Appointment::factory(random_int(1, 5))->create()->each(function ($appointment) use ($employees, $feedbacks) {
+                        $employee = $employees->random();
+                        $feedback = $feedbacks->isNotEmpty() ? $feedbacks->random() : null;
+
+                        $faker = Factory::create();
+                        $service_report_remarks = $faker->randomElement([0, 1]) === 0 ? $faker->sentences(asText: true) : null;
+                        DB::table('service_reports')->insert([
+                            'appt_id' => $appointment->appt_id,
+                            'emp_id' => $employee->emp_id,
+                            'cust_fb_id' => $feedback ? $feedback->cust_fb_id : null,
+                            'service_report_remarks' => $service_report_remarks
+                        ]);
+                    }));
+                }));
         });
 
         DB::statement("INSERT INTO departments(dept_name, dept_type)
@@ -60,10 +81,10 @@ VALUES
 ('Polishing Technician');");
 
         $deps = Department::all();
-        $employees = Employee::factory()->has(EmployeeSchedule::factory(5))->count(50)->create();
+
         $roles = Role::all();
         foreach ($employees as $employee) {
-            DB::table('employee_roles')->insert([
+            DB::table('employee_roles')->insertOrIgnore([
                 'emp_id' => $employee->emp_id,
                 'role_id' => $roles->random()->role_id,
                 'dept_id' => $deps->random()->dept_id
@@ -125,25 +146,25 @@ VALUES
 
         foreach ($services as $service) {
             DB::table('services')
-                ->insert([
+                ->insertOrIgnore([
                     'dept_id' => $deps->random()->dept_id,
                     'service_name' => $service,
                     'service_price' => Factory::create()->randomFloat(2, 20, 999)
                 ]);
         }
         $services = Service::all();
-        $items = InventoryItem::factory(100)->create();
-        $appointments = Appointment::factory(50)->create();
-
+        $items = InventoryItem::factory(40)->create();
+//        $appointments = Appointment::factory(100)->create();
+        $appointments = Appointment::all();
 
         foreach ($appointments as $appointment) {
             $counter = random_int(1, 3);
             for ($i = 0; $i < $counter; $i++) {
-                DB::table('appointment_services')->insert([
+                DB::table('appointment_services')->insertOrIgnore([
                     'service_id' => $services->random()->service_id,
                     'appt_id' => $appointment->appt_id
                 ]);
-                DB::table('appointment_items')->insert([
+                DB::table('appointment_items')->insertOrIgnore([
                     'appt_id' => $appointment->appt_id,
                     'inv_item_id' => $items->random()->inv_item_id,
                     'qty_used' => random_int(1, 20)
@@ -151,7 +172,7 @@ VALUES
             }
         }
 
-        CustomerFeedback::factory(20)->create();
+//        CustomerFeedback::factory(20)->create();
 
     }
 }

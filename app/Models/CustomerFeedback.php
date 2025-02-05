@@ -13,4 +13,9 @@ class CustomerFeedback extends Model
     protected $primaryKey = 'cust_fb_id';
     protected $guarded = [];
     public $timestamps = false;
+
+    public function customer()
+    {
+        return $this->belongsTo(Customer::class, 'cust_id', 'cust_id');
+    }
 }

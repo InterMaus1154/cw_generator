@@ -18,7 +18,7 @@ class CustomerFeedbackFactory extends Factory
     public function definition(): array
     {
         return [
-            'cust_id' => Customer::all()->random()->cust_id,
+            'cust_id' => Customer::factory(),
             'cust_fb_content' => $this->faker->realTextBetween(100, 500)
         ];
     }

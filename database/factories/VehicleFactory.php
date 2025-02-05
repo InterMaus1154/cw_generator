@@ -22,7 +22,7 @@ class VehicleFactory extends Factory
 
         return [
             'cust_id' => Customer::factory(),
-            'vehicle_plate_number' => $faker->vehicleRegistration('[A-Z]{3}-[0-9]{3}'),
+            'vehicle_plate_number' => $faker->unique()->vehicleRegistration('[A-Z]{3}-[0-9]{3}'),
             'vehicle_brand' => $faker->vehicleBrand(),
             'vehicle_model' => $faker->vehicleModel(),
             'vehicle_color' => $faker->colorName,

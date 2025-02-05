@@ -16,4 +16,9 @@ class Customer extends Model
     {
         return $this->hasMany(Vehicle::class, 'cust_id', 'cust_id');
     }
+
+    public function customerFeedbacks()
+    {
+        return $this->hasMany(CustomerFeedback::class, 'cust_id', 'cust_id');
+    }
 }
