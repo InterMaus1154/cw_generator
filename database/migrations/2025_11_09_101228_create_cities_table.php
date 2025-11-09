@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('services', function (Blueprint $table) {
-            $table->increments('service_id');
-            $table->string('service_name', 200);
-            $table->decimal('service_price', 10, 2);
-            $table->text('service_desc');
+        Schema::create('cities', function (Blueprint $table) {
+            $table->id('city_id'); // SERIAL PRIMARY KEY
+            $table->string('city_name', 50); // VARCHAR(50) NOT NULL
         });
     }
 
@@ -24,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('services');
+        Schema::dropIfExists('cities');
     }
 };

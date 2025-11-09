@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Service extends Model
+class PartCategory extends Model
 {
-    /** @use HasFactory<\Database\Factories\ServiceFactory> */
+    /** @use HasFactory<\Database\Factories\PartCategoryFactory> */
     use HasFactory;
 
-    public $timestamps = false;
     protected $guarded = [];
-    protected $primaryKey = 'service_id';
-
+    public $timestamps = false;
+    protected $primaryKey = 'part_cat_id';
 }

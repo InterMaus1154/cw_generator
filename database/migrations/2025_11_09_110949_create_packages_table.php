@@ -11,11 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('services', function (Blueprint $table) {
-            $table->increments('service_id');
-            $table->string('service_name', 200);
-            $table->decimal('service_price', 10, 2);
-            $table->text('service_desc');
+        Schema::create('packages', function (Blueprint $table) {
+            $table->id('pkg_id');
+            $table->string('pkg_name', 200);
+            $table->text('pkg_desc');
+            $table->boolean('is_active')->default(true);
+
+            // Index
+            $table->index('pkg_name', 'idx_package_name');
         });
     }
 
@@ -24,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('services');
+        Schema::dropIfExists('packages');
     }
 };

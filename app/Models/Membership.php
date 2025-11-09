@@ -5,13 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Service extends Model
+class Membership extends Model
 {
-    /** @use HasFactory<\Database\Factories\ServiceFactory> */
+    /** @use HasFactory<\Database\Factories\MembershipFactory> */
     use HasFactory;
 
-    public $timestamps = false;
+    protected $primaryKey = 'mship_id';
     protected $guarded = [];
-    protected $primaryKey = 'service_id';
-
+    public $timestamps = false;
 }

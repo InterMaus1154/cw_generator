@@ -11,6 +11,7 @@ use App\Models\EmployeeSchedule;
 use App\Models\InventoryItem;
 use App\Models\Role;
 use App\Models\Service;
+use App\Models\Supplier;
 use App\Models\User;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
@@ -25,7 +26,7 @@ class DatabaseSeeder extends Seeder
     /**
      * Seed the application's database.
      */
-    public function run(): void
+    /*public function run(): void
     {
 
         $employees = Employee::factory()->has(EmployeeSchedule::factory(5))->count(35)->create();
@@ -174,5 +175,41 @@ VALUES
 
 //        CustomerFeedback::factory(20)->create();
 
+    }*/
+
+    public function run()
+    {
+        // cities
+        $this->call(CitySeeder::class);
+
+        // suppliers
+        $this->call(SupplierSeeder::class);
+
+        // part categories
+        $this->call(PartCategorySeeder::class);
+
+        // parts
+        $this->call(PartSeeder::class);
+
+        // part suppliers
+        $this->call(PartSupplierSeeder::class);
+
+        // packages (for services)
+        $this->call(PackageSeeder::class);
+
+        // services
+        $this->call(ServiceSeeder::class);
+
+        // package services
+        $this->call(PackageServiceSeeder::class);
+
+        // discounts for services
+        $this->call(ServiceDiscountSeeder::class);
+
+        // memberships
+        $this->call(MembershipSeeder::class);
+
+        // services for memberships
+        $this->call(MembershipServiceSeeder::class);
     }
 }
