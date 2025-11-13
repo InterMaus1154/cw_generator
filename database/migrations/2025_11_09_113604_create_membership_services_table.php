@@ -8,10 +8,19 @@ return new class extends Migration {
     /**
      * Run the migrations.
      */
+
     public function up(): void
     {
         // Create ENUM type for PostgreSQL
-        DB::statement("CREATE TYPE membership_discount_type AS ENUM ('FIXED', 'PERCENT')");
+
+        DB::statement("
+        DO $$
+        BEGIN
+            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'membership_discount_type') THEN
+                CREATE TYPE membership_discount_type AS ENUM ('FIXED', 'PERCENT');
+            END IF;
+        END$$;
+    ");
 
         Schema::create('membership_services', function (Blueprint $table) {
             $table->integer('mship_id');

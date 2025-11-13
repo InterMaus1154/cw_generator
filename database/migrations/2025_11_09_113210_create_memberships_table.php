@@ -4,15 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
     public function up(): void
     {
         // Create ENUM type for PostgreSQL
-        DB::statement("CREATE TYPE membership_pay_period AS ENUM ('YEARLY', 'MONTHLY', 'WEEKLY')");
+        DB::statement("
+        DO $$
+        BEGIN
+            IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'membership_pay_period') THEN
+                CREATE TYPE membership_pay_period AS ENUM ('YEARLY', 'MONTHLY', 'WEEKLY');
+            END IF;
+        END$$;
+    ");
 
         Schema::create('memberships', function (Blueprint $table) {
             $table->id('mship_id');
@@ -34,8 +40,9 @@ return new class extends Migration
 
     public function down(): void
     {
+
         Schema::dropIfExists('memberships');
-        DB::statement('DROP TYPE membership_pay_period');
+        DB::statement('DROP TYPE IF EXISTS membership_pay_period');
     }
 
 };

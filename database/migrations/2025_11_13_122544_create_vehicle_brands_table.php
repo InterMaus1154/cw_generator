@@ -11,11 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('customer_feedback', function (Blueprint $table) {
-            $table->increments('cust_fb_id');
-            $table->unsignedInteger('cust_id');
-            $table->foreign('cust_id')->references('cust_id')->on('customers');
-            $table->text('cust_fb_content');
+        Schema::create('vehicle_brands', function (Blueprint $table) {
+            $table->id('vec_brand_id');
+            $table->string('vec_brand_name', 50)->unique();
         });
     }
 
@@ -24,6 +22,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('customer_feedback');
+        Schema::dropIfExists('vehicle_brands');
     }
 };

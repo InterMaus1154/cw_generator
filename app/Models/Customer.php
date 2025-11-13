@@ -11,14 +11,10 @@ class Customer extends Model
     use HasFactory;
     public $timestamps = false;
     protected $primaryKey = 'cust_id';
+    protected $guarded = [];
 
     public function vehicles()
     {
         return $this->hasMany(Vehicle::class, 'cust_id', 'cust_id');
-    }
-
-    public function customerFeedbacks()
-    {
-        return $this->hasMany(CustomerFeedback::class, 'cust_id', 'cust_id');
     }
 }

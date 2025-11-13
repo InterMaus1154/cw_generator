@@ -10,16 +10,17 @@ class Vehicle extends Model
     /** @use HasFactory<\Database\Factories\VehicleFactory> */
     use HasFactory;
 
+    protected $primaryKey = 'vec_id';
+    protected $guarded = [];
     public $timestamps = false;
-    protected $primaryKey = 'vehicle_id';
+
+    public function brand()
+    {
+        return $this->belongsTo(VehicleBrand::class, 'vec_brand_id', 'vec_brand_id');
+    }
 
     public function customer()
     {
         return $this->belongsTo(Customer::class, 'cust_id', 'cust_id');
-    }
-
-    public function appointments()
-    {
-        return $this->hasMany(Appointment::class, 'vehicle_id', 'vehicle_id');
     }
 }

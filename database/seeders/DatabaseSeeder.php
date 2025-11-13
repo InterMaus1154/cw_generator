@@ -211,5 +211,23 @@ VALUES
 
         // services for memberships
         $this->call(MembershipServiceSeeder::class);
+
+        // customers
+        $this->call(CustomerSeeder::class);
+
+        // emergency contacts for customers
+        $this->call(EmergencyContactSeeder::class);
+
+        // vehicle brands
+        $this->call(VehicleBrandSeeder::class);
+
+        // vehicles
+        $this->call(VehicleSeeder::class);
+
+        // branches
+        $this->call(BranchSeeder::class);
+
+        // bays
+        $this->call(BaySeeder::class);
     }
 }
