@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Booking;
 use App\Models\Invoice;
+use Illuminate\Support\Facades\DB;
 
 class InvoiceSeeder extends Seeder
 {
@@ -24,11 +25,17 @@ class InvoiceSeeder extends Seeder
         }
 
         foreach ($bookings as $booking) {
+            // Only bookings before 2025-11-01 are eligible for invoices per requirements
+            $bookingDate = $booking->booking_date ?? now()->format('Y-m-d');
+            if (strtotime($bookingDate) >= strtotime('2025-11-01')) {
+                continue;
+            }
+
             if (random_int(1, 100) > 80) {
                 continue; // ~20% no invoice
             }
 
-            $issueDate = $booking->booking_date ?? now()->format('Y-m-d');
+            $issueDate = $bookingDate;
             $dueDays = random_int(7, 30);
             $dueDate = date('Y-m-d', strtotime($issueDate . " +{$dueDays} days"));
 
@@ -48,8 +55,8 @@ class InvoiceSeeder extends Seeder
                 $status = 'OVERDUE';
             }
 
-            // update enum column using raw SQL to avoid casting issues
-            \DB::table('invoices')->where('inv_id', $inv->inv_id)->update(['inv_status' => $status]);
+            // update enum column using DB facade to avoid casting issues
+            DB::table('invoices')->where('inv_id', $inv->inv_id)->update(['inv_status' => $status]);
         }
     }
 }

@@ -24,7 +24,14 @@ class BranchFactory extends Factory
         $firstTwo = array_slice($words, 0, 2);
         $branchNameShort = strtoupper(sprintf('%s%s', $firstTwo[0][0], $firstTwo[1][0]));
         $branchRandomNumber = fake()->randomNumber(nbDigits: 2);
-        $branchCode = strtoupper(sprintf('%s%s%s%d', $city->city_name[0], $city->city_name[1], $branchNameShort, $branchRandomNumber));
+        // build a branch code and ensure uniqueness by retrying a few times
+        $attempts = 0;
+        do {
+            $branchRandomNumber = fake()->randomNumber(nbDigits: 2);
+            $branchCode = strtoupper(sprintf('%s%s%s%d', $city->city_name[0], $city->city_name[1], $branchNameShort, $branchRandomNumber));
+            $exists = \App\Models\Branch::where('branch_code', $branchCode)->exists();
+            $attempts++;
+        } while ($exists && $attempts < 10);
         return [
             'branch_code' => $branchCode,
             'branch_name' => sprintf('%s %s %d', $city->city_name, $branchName, $branchRandomNumber),

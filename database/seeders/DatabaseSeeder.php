@@ -227,17 +227,23 @@ VALUES
         // branches
         $this->call(BranchSeeder::class);
 
-    // staff per branch
-    $this->call(StaffSeeder::class);
+        // parts available per branch
+        $this->call(BranchPartSeeder::class);
 
-    // staff schedules
-    $this->call(StaffScheduleSeeder::class);
+        // staff per branch
+        $this->call(StaffSeeder::class);
 
-    // staff certifications
-    $this->call(StaffCertificationSeeder::class);
+        // part transfer requests between branches
+        $this->call(PartTransferSeeder::class);
 
-    // branch managers
-    $this->call(BranchManagerSeeder::class);
+        // staff schedules
+        $this->call(StaffScheduleSeeder::class);
+
+        // staff certifications
+        $this->call(StaffCertificationSeeder::class);
+
+        // branch managers
+        $this->call(BranchManagerSeeder::class);
 
         // bays
         $this->call(BaySeeder::class);
@@ -248,18 +254,37 @@ VALUES
         // bookings
         $this->call(BookingSeeder::class);
 
+        // customer feedbacks and threaded replies
+        $this->call(CustomerFeedbackSeeder::class);
+        $this->call(FeedbackReplySeeder::class);
+
         // booking packages (rare)
         $this->call(BookingPackagesSeeder::class);
 
         // invoices
         $this->call(InvoiceSeeder::class);
 
+        // installments and refunds
+        $this->call(InstallmentSeeder::class);
+        $this->call(RefundSeeder::class);
+
         // booking services (individual services attached to bookings)
         $this->call(BookingServicesSeeder::class);
 
-    $this->call(RoleSeeder::class);
-        // staff roles (pivot)
-    $this->call(StaffRoleSeeder::class);
+        // jobs
+        $this->call(JobSeeder::class);
 
+        // additional services found/added by technicians during jobs
+        $this->call(AdditionalServiceSeeder::class);
+
+        // MOT results for bookings with MOT service
+        $this->call(MotResultSeeder::class);
+
+        // parts used per job
+        $this->call(PartUsageSeeder::class);
+
+        $this->call(RoleSeeder::class);
+        // staff roles (pivot)
+        $this->call(StaffRoleSeeder::class);
     }
 }

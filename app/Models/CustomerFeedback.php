@@ -7,12 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 
 class CustomerFeedback extends Model
 {
-    /** @use HasFactory<\Database\Factories\CustomerFeedbackFactory> */
     use HasFactory;
 
     protected $primaryKey = 'cust_fb_id';
     protected $guarded = [];
     public $timestamps = false;
+    protected $table = 'customer_feedbacks';
+
+    public function replies()
+    {
+        return $this->hasMany(FeedbackReply::class, 'cust_fb_id', 'cust_fb_id');
+    }
 
     public function customer()
     {

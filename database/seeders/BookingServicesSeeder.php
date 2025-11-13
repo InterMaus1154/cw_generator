@@ -30,7 +30,7 @@ class BookingServicesSeeder extends Seeder
             }
 
             // Assign 1-3 distinct services to the booking
-            $count = random_int(1, min(3, $services->count()));
+            $count = random_int(1, min(5, $services->count()));
             $chosen = $services->random($count);
 
             foreach ($chosen as $svc) {
