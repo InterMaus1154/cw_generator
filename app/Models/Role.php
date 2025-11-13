@@ -9,8 +9,16 @@ class Role extends Model
 {
     /** @use HasFactory<\Database\Factories\RoleFactory> */
     use HasFactory;
-    public $timestamps = false;
-    protected $guarded = [];
-    protected $primaryKey = 'role_id';
 
+    protected $primaryKey = 'role_id';
+    protected $guarded = [];
+    public $timestamps = false;
+
+    /**
+     * Staff that have this role (pivot: staff_roles)
+     */
+    public function staff()
+    {
+        return $this->belongsToMany(Staff::class, 'staff_roles', 'role_id', 'staff_id');
+    }
 }

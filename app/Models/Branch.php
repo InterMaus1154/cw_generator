@@ -18,4 +18,9 @@ class Branch extends Model
     {
         return $this->belongsTo(City::class, 'branch_city', 'city_id');
     }
+
+    public function staff()
+    {
+        return $this->hasMany(Staff::class, 'branch_id', 'branch_id');
+    }
 }

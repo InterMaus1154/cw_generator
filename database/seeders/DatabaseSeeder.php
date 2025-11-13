@@ -227,7 +227,39 @@ VALUES
         // branches
         $this->call(BranchSeeder::class);
 
+    // staff per branch
+    $this->call(StaffSeeder::class);
+
+    // staff schedules
+    $this->call(StaffScheduleSeeder::class);
+
+    // staff certifications
+    $this->call(StaffCertificationSeeder::class);
+
+    // branch managers
+    $this->call(BranchManagerSeeder::class);
+
         // bays
         $this->call(BaySeeder::class);
+
+        // bay inspections
+        $this->call(BayInspectionSeeder::class);
+
+        // bookings
+        $this->call(BookingSeeder::class);
+
+        // booking packages (rare)
+        $this->call(BookingPackagesSeeder::class);
+
+        // invoices
+        $this->call(InvoiceSeeder::class);
+
+        // booking services (individual services attached to bookings)
+        $this->call(BookingServicesSeeder::class);
+
+    $this->call(RoleSeeder::class);
+        // staff roles (pivot)
+    $this->call(StaffRoleSeeder::class);
+
     }
 }
